@@ -71,11 +71,10 @@ sudo vim /etc/systemd/timesyncd.conf
 ```
 Uncomment and set your preferred NTP server,
 For example:
-```
 [Time]
 NTP=10.1.1.2
 FallbackNTP=0.pool.ntp.org
-```
+
 3. Restart the service
 ```bash
 sudo systemctl restart systemd-timesyncd
@@ -94,7 +93,7 @@ NTP synchronized: yes
 
 
 ## Troubleshooting Tips
-# Probe to see which NTP service is running
+### Probe to see which NTP service is running
 Only one of these should ideally be managing NTP. 
 ```bash
 systemctl status systemd-timesynd
@@ -102,14 +101,20 @@ systemctl status cronyd
 systemctl status ntpd
 ```
 If you're using chronyd, or ntpd, systemd-timesyncd can be disabled
-# Check if NTP port is blocked
+### Check if NTP port is blocked
 These commands hang or return unreachable servers
 ```bash
 sudo ntpq -p     # for ntpd
 chronyc source   # for chronyd
 ```
-# Allow NTP through the server's firewall
+### Allow NTP through the server's firewall
 ```bash
 sudo ufw allow 123/udp
 sudo ufw status
+```
+### Disable ntpd or chronyd if installed
+Idealy, only one NTP client should be active.
+```bash
+sudo systemctl disable --now ntp
+sudo systemctl disable --now chronyd
 ```

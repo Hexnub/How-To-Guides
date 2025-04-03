@@ -1,6 +1,6 @@
 # NTP - A How To Guide by Hexnub
 
-## NTP Server
+## NTP Server ntpd
 
 ## How to create and configure an NTP server
 1. On Ubuntu update your local repo and upgrade if you wish.
@@ -59,3 +59,57 @@ Verify timezone
 timedatectl
 ```
 
+## NTP Client timesyncd.service
+1. Enable NTP with timedatectl
+This tells systemd to use systemd-timesynd for time synchronization:
+```bash
+sudo timedatectl set-ntp true
+```
+2. Configure NTP servers in /etc/systemd/timesyncd.conf
+```bash
+sudo vim /etc/systemd/timesyncd.conf
+```
+Uncomment and set your preferred NTP server,
+For example:
+```
+[Time]
+NTP=10.1.1.2
+FallbackNTP=0.pool.ntp.org
+```
+3. Restart the service
+```bash
+sudo systemctl restart systemd-timesyncd
+```
+4. Check the sync status
+```bash
+timedatectl status
+```
+or more detailed:
+```bash
+timedatectl show-timesync --all
+```
+You should see:
+NTP service: active
+NTP synchronized: yes
+
+
+## Troubleshooting Tips
+# Probe to see which NTP service is running
+Only one of these should ideally be managing NTP. 
+```bash
+systemctl status systemd-timesynd
+systemctl status cronyd
+systemctl status ntpd
+```
+If you're using chronyd, or ntpd, systemd-timesyncd can be disabled
+# Check if NTP port is blocked
+These commands hang or return unreachable servers
+```bash
+sudo ntpq -p     # for ntpd
+chronyc source   # for chronyd
+```
+# Allow NTP through the server's firewall
+```bash
+sudo ufw allow 123/udp
+sudo ufw status
+```

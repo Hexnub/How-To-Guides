@@ -96,7 +96,7 @@ NTP synchronized: yes
 ### Probe to see which NTP service is running
 Only one of these should ideally be managing NTP. 
 ```bash
-systemctl status systemd-timesynd
+systemctl status systemd-timesyncd
 systemctl status cronyd
 systemctl status ntpd
 ```
@@ -105,7 +105,7 @@ If you're using chronyd, or ntpd, systemd-timesyncd can be disabled
 These commands hang or return unreachable servers
 ```bash
 sudo ntpq -p     # for ntpd
-chronyc source   # for chronyd
+chronyc sources   # for chronyd
 ```
 ### Allow NTP through the server's firewall
 ```bash

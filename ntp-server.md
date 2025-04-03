@@ -41,3 +41,21 @@ check your ntp sources
 ntpq -p
 ```
 Note: restart the ntp daemon after making any changes to the ntp.conf file
+```bash
+sudo systemctl restart ntp
+```
+
+## Setting the time zone with timedatectl
+List available timezones
+```bash
+timedatectl list-timezones
+```
+Set timezone
+```bash
+sudo timedatectl set-timezone America/Los_Angeles
+```
+Verify timezone
+```bash
+timedatectl
+```
+

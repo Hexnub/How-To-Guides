@@ -118,3 +118,26 @@ Idealy, only one NTP client should be active.
 sudo systemctl disable --now ntp
 sudo systemctl disable --now chronyd
 ```
+## NTP Configuration on Windows DC
+1. Find which DC holds the PDC role (Primary Domain Controller)
+```powershell
+netdom /query fsmo
+```
+2. Find your local pool for less latency.
+```
+https://www.ntppool.org/zone/us
+```
+
+```powershell
+w32tm /query /computer: "0.us.pool.ntp.org 1.us.pool.ntp.org 2.us.pool.ntp.org 3.us.pool.ntp.org" /syncfromflags:manual /update
+```
+3. Check your configuration, restart time service and query pool
+```powershell
+W32tm /query /computer:localhost /configuration
+```
+```powershell
+net stop w32time && net start w32time
+```
+```powershell
+W32tm /query /source
+```

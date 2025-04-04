@@ -118,7 +118,7 @@ Idealy, only one NTP client should be active.
 sudo systemctl disable --now ntp
 sudo systemctl disable --now chronyd
 ```
-## NTP Configuration on Windows DC
+## NTP Client Configuration on Windows DC
 1. Find which DC holds the PDC role (Primary Domain Controller)
 ```powershell
 netdom /query fsmo
